@@ -27,3 +27,11 @@ jobs:
     # Step 4: If it doesn't crash, the robot celebrates!
     - name: Final Report
       run: echo "✅ The code is perfectly safe! Ready for the DevOps factory."
+
+# NEW STEP: The Robot makes the phone call to Repo 2
+    - name: Trigger the DevOps Repository
+      uses: peter-evans/repository-dispatch@v3
+      with:
+        token: ${{ secrets.MY_SECRET_PASSWORD }}
+        repository: DilukshiWijayawardhana/air-global-devops-repo
+        event-type: start-docker-build
