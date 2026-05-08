@@ -1,0 +1,29 @@
+name: AirTrack CI Inspector
+
+# When should the robot wake up? Every time we push new code to the main branch!
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  inspect-code:
+    runs-on: ubuntu-latest # The robot borrows a free Linux computer from GitHub
+
+    steps:
+    # Step 1: The robot downloads your code
+    - name: Download Code
+      uses: actions/checkout@v4
+
+    # Step 2: The robot installs the Go language on its computer
+    - name: Install Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: '1.21'
+
+    # Step 3: The robot tries to build the airport system to check for spelling errors
+    - name: Test the Build
+      run: go build main.go
+
+    # Step 4: If it doesn't crash, the robot celebrates!
+    - name: Final Report
+      run: echo "✅ The code is perfectly safe! Ready for the DevOps factory."

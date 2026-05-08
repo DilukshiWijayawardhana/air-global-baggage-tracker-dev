@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AirTrack Global</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f9; text-align: center; padding: 50px; }
+        .container { max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        h1 { color: #003366; } /* Airline Blue */
+        button { background-color: #003366; color: white; border: none; padding: 12px 24px; margin: 10px; cursor: pointer; border-radius: 5px; font-size: 16px; }
+        button:hover { background-color: #001f4d; }
+        #screen { margin-top: 30px; padding: 20px; background: #e8eaed; border-radius: 5px; font-size: 18px; font-weight: bold; color: #333; min-height: 30px; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>✈️ AirTrack Global System</h1>
+        <p>Live Baggage Management Dashboard</p>
+        
+        <!-- These buttons send DIFFERENT Bag IDs to the Go Code to prove it is Dynamic! -->
+        <button onclick="askGoCode('/api/scan?id=BAG111')">Scan Dilukshi's Bag (BAG111)</button>
+        <button onclick="askGoCode('/api/scan?id=BAG999')">Scan Unknown Bag (BAG999)</button>
+
+        <!-- The Go code messages will appear here -->
+        <div id="screen">System Ready. Waiting for scanner...</div>
+    </div>
+
+    <script>
+        function askGoCode(doorName) {
+            fetch(doorName)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('screen').innerText = data.message;
+                })
+                .catch(error => {
+                    document.getElementById('screen').innerText = "System Error! Cannot connect to Backend.";
+                });
+        }
+    </script>
+
+</body>
+</html>
