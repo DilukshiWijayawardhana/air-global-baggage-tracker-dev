@@ -14,7 +14,7 @@ type SystemResponse struct {
 func main() {
 	// In-memory datastore mapping Bag IDs to passenger records
 	airportDatabase := map[string]string{
-		"BAG111": "Dilukshi Wijayawardhana (Flight UL101)",
+		"BAG111": "Induwara Wijayawardhana (Flight UL101)",
 		"BAG222": "John Doe (Flight UL202)",
 	}
 
