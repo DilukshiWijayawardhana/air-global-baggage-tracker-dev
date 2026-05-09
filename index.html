@@ -18,11 +18,11 @@
         <h1>✈️ AirTrack Global System</h1>
         <p>Live Baggage Management Dashboard</p>
         
-        <!-- These buttons send DIFFERENT Bag IDs to the Go Code to prove it is Dynamic! -->
+       
         <button onclick="askGoCode('/api/scan?id=BAG111')">Scan Dilukshi's Bag (BAG111)</button>
         <button onclick="askGoCode('/api/scan?id=BAG999')">Scan Unknown Bag (BAG999)</button>
 
-        <!-- The Go code messages will appear here -->
+        
         <div id="screen">System Ready. Waiting for scanner...</div>
     </div>
 
@@ -34,7 +34,7 @@
                     document.getElementById('screen').innerText = data.message;
                 })
                 .catch(error => {
-                    document.getElementById('screen').innerText = "System Error! Cannot connect to Backend.";
+                    document.getElementById('screen').innerText = "System Error!";
                 });
         }
     </script>

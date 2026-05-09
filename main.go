@@ -6,47 +6,48 @@ import (
 	"net/http"
 )
 
+
 type SystemResponse struct {
 	Message string `json:"message"`
 }
 
 func main() {
-	// This is our "Digital Filing Cabinet" (A tiny database)
-	// It stores the Bag ID and the Passenger's Name
+	// In-memory datastore mapping Bag IDs to passenger records
 	airportDatabase := map[string]string{
 		"BAG111": "Dilukshi Wijayawardhana (Flight UL101)",
 		"BAG222": "John Doe (Flight UL202)",
 	}
 
-	// 1. Show the visual dashboard
+	// Route: Serve the frontend UI dashboard
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "index.html")
 	})
 
-	// 2. The DYNAMIC Scan API
+	// Route: Process incoming bag scans dynamically
 	http.HandleFunc("/api/scan", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		
-		// The code reads the Bag ID from the scanner (the button click)
+		// Extract scanned ID from URL query parameters
 		scannedID := r.URL.Query().Get("id")
 
-		// The code checks the Digital Filing Cabinet
+		// Lookup bag record in datastore
 		passengerInfo, bagExists := airportDatabase[scannedID]
 
 		var dynamicMessage string
 
 		if bagExists {
-			// If the bag is in the database, say who it belongs to!
-			dynamicMessage = fmt.Sprintf("✅ SUCCESS: Bag %s loaded! Owner: %s", scannedID, passengerInfo)
+			// Match found: Construct success payload
+			dynamicMessage = fmt.Sprintf("SUCCESS: Bag %s loaded! Owner: %s", scannedID, passengerInfo)
 		} else {
-			// If the bag is NOT in the database, sound an alarm!
-			dynamicMessage = fmt.Sprintf("❌ SECURITY ALERT: Bag %s does not belong to any passenger!", scannedID)
+			// No match: Trigger security alert payload
+			dynamicMessage = fmt.Sprintf("SECURITY ALERT: Unregistered Bag %s detected!", scannedID)
 		}
 
-		// Send the dynamic message back to the screen
+		// Transmit JSON response back to the client
 		json.NewEncoder(w).Encode(SystemResponse{Message: dynamicMessage})
 	})
 
-	fmt.Println("AirTrack Global is LIVE! Listening on port 8080...")
+	// Initialize server on port 8080
+	fmt.Println("AirTrack API is LIVE! Listening on port 8080...")
 	http.ListenAndServe(":8080", nil)
 }
